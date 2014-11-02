@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:complexType name="commandlist">
+		<xs:annotation>
+		<xs:documentation xml:lang="de-DE">Kommandozeilenbefehle</xs:documentation>
+		<xs:documentation xml:lang="en">list of shell commands</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="command" type="xs:string" maxOccurs="unbounded">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">Kommandozeilenbefehl</xs:documentation>
+				<xs:documentation xml:lang="en">shell command</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="item">
+		<xs:annotation>
+		<xs:documentation xml:lang="de-DE">Beschreibung einer Datei</xs:documentation>
+		<xs:documentation xml:lang="en">description of a file</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="path" type="xs:string" minOccurs="1">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">Pfad zur Datei</xs:documentation>
+				<xs:documentation xml:lang="en">absolute path to the file</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateoption" type="createDatelyFolder" minOccurs="0">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">Datumsordner anlegen</xs:documentation>
+				<xs:documentation xml:lang="en">create folder after date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="createFolder" type="xs:string" minOccurs="0">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">Namen für Ordner zum anlegen</xs:documentation>
+				<xs:documentation xml:lang="en">name for folder to create</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="robocopyoptions" type="xs:string" minOccurs="0">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">lokale Robocopy-Optionen</xs:documentation>
+				<xs:documentation xml:lang="en">local robocopy options</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>	
+	<xs:complexType name="items">
+		<xs:annotation>
+		<xs:documentation xml:lang="de-DE">Dateien</xs:documentation>
+		<xs:documentation xml:lang="en">files</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="item" type="item" maxOccurs="unbounded">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">Datei</xs:documentation>
+				<xs:documentation xml:lang="de-DE">file</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="external">
+		<xs:annotation>
+		<xs:documentation xml:lang="de-DE">Kombination aus Datenträgernamen und relativem Pfad</xs:documentation>
+		<xs:documentation xml:lang="en">combination from device name and relative path</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="drivename" type="xs:string" minOccurs="1">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">Datenträgername</xs:documentation>
+				<xs:documentation xml:lang="en">device name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pathondrive" type="xs:string" minOccurs="1">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">relativer Pfad</xs:documentation>
+				<xs:documentation xml:lang="en">relative path</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="mediumtype">
+		<xs:annotation>
+				<xs:documentation xml:lang="de-DE">Medientyp</xs:documentation>
+				<xs:documentation xml:lang="en">mediumtype</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="absolute" type="xs:string">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">absoluter Pfad</xs:documentation>
+				<xs:documentation xml:lang="en">absolute path</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="external" type="external">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">externer Pfad</xs:documentation>
+				<xs:documentation xml:lang="en">external path</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="backupmedium">
+		<xs:annotation>
+		<xs:documentation xml:lang="de-DE">Backupmediumbeschreibung</xs:documentation>
+		<xs:documentation xml:lang="en">backupmedium description</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="mediumtype" type="mediumtype" minOccurs="1"/>
+			<xs:element name="logfolder" type="xs:string" minOccurs="1">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">relativer Pfad zum Ordner mit den Logdateien</xs:documentation>
+				<xs:documentation xml:lang="en">relative path to the folder with the log files</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="robocopyoptions" type="xs:string" minOccurs="0">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">lokale Robocopy-Optionen</xs:documentation>
+				<xs:documentation xml:lang="en">locale robocopy options</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="backupmedia">
+		<xs:annotation>
+		<xs:documentation xml:lang="de-DE">Backupmedien</xs:documentation>
+		<xs:documentation xml:lang="en">backupmedia</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="backupmedium" type="backupmedium" maxOccurs="unbounded">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">Backupmedium</xs:documentation>
+				<xs:documentation xml:lang="de-DE">backupmedium</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="backup">
+		<xs:all>
+			<xs:element name="items" type="items">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">zu sichernde Dateien</xs:documentation>
+				<xs:documentation xml:lang="en">items to be saved</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pre" type="commandlist" minOccurs="0">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">Befehle, die vor dem Backup ausgeführt werden</xs:documentation>
+				<xs:documentation xml:lang="en">commands, which get executed before the backup</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="post" type="commandlist" minOccurs="0">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">Befehle, die nach dem Backup ausgeführt werden</xs:documentation>
+				<xs:documentation xml:lang="en">commands, which get executed after the backup</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="backupmedia" type="backupmedia">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">Backupmedien, auf die gesichert wird</xs:documentation>
+				<xs:documentation xml:lang="de-DE">backupmedium, to which everything is saved</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="minErrorToReport" type="errorleveltype">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">minimaler Robocopy-Exit-Code, der das Programm stopt</xs:documentation>
+				<xs:documentation xml:lang="en">minimal robocopy exit code, which stops the program</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name = "globalrobocopyoptions" type="globalrobocopyoptions">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">globale Robocopy-Optionen</xs:documentation>
+				<xs:documentation xml:lang="en">global robocopy options</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="backup" type="backup">
+		<xs:annotation>
+		<xs:documentation xml:lang="de-DE">Backupkonfiguration</xs:documentation>
+		<xs:documentation xml:lang="en">backup configuration</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:simpleType name="errorleveltype">
+		<xs:annotation>
+		<xs:documentation xml:lang="de-DE">minimaler Robocopy-Exit-Code, ab dem das Programm abbricht</xs:documentation>
+		<xs:documentation xml:lang="en">minimum robocopy error code, which stops the program</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+		<xs:minInclusive value="1"/>
+		<xs:maxInclusive value="16"/>
+	</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="empty"/>
+	<xs:complexType name="createDatelyFolder">
+		<xs:annotation>
+		<xs:documentation xml:lang="de-DE">zusätzlicher Ordner, der pro Tag, Monat, Jahr auf dem Backupmedium angelegt wird</xs:documentation>
+		<xs:documentation xml:lang="en">additional folder, which is created on the backup medium per day, month, year</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="createDailyFolder" type="empty">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">pro Tag</xs:documentation>
+				<xs:documentation xml:lang="en">per day</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="createMonthlyFolder" type="empty">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">pro Monat</xs:documentation>
+				<xs:documentation xml:lang="en">per month</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="createYearlyFolder" type="empty">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">pro Jahr</xs:documentation>
+				<xs:documentation xml:lang="en">per year</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="globalrobocopyoptions">
+		<xs:annotation>
+		<xs:documentation xml:lang="de-DE">global robocopy options, which get overridden by local options </xs:documentation>
+		<xs:documentation xml:lang="en">globale Robocopy-Optionen, die von lokalen Optionen überschrieben werden</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="folder" type="xs:string">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">Standard-Robocopy-Optionen für einen Ordner</xs:documentation>
+				<xs:documentation xml:lang="en">default robocopy options for a folder</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="file" type="xs:string">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">Standard-Robocopy-Optionen für eine Datei (kein Ordner)</xs:documentation>
+				<xs:documentation xml:lang="en">default robocopy options for a regular file (not a folder)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="forall" type="xs:string">
+				<xs:annotation>
+				<xs:documentation xml:lang="de-DE">Standard-Robocopy-Optionenen für alles</xs:documentation>
+				<xs:documentation xml:lang="en">default robocopy options for everything</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	
+</xs:schema>
