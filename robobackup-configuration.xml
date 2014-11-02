@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<backup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="resources/backup.xsd">
+  <items>
+    <item>
+      <path>C:\FolderToBackup</path>
+    </item>
+    <item>
+      <path>C:\AnotherFolder</path>
+    </item>
+    <item>
+      <path>\\Neighbour\ADistantFolder</path>
+      <dateoption>
+        <createDailyFolder />
+      </dateoption>
+    </item>
+  </items>
+  <backupmedia>
+    <backupmedium>
+      <mediumtype>
+        <external>
+          <drivename>MyBackupDrive</drivename>
+          <pathondrive>backup</pathondrive>
+        </external>
+      </mediumtype>
+      <logfolder>logs</logfolder>
+    </backupmedium>
+    <backupmedium>
+      <logfolder>logs</logfolder>
+      <mediumtype>
+        <absolute>Z:\backup\</absolute>
+      </mediumtype>
+      <robocopyoptions>/IPG:7</robocopyoptions>
+    </backupmedium>
+  </backupmedia>
+  <minErrorToReport>4</minErrorToReport>
+  <globalrobocopyoptions>
+    <folder>/E</folder>
+    <file></file>
+    <forall>/R:20 /W:5 /NP /DST /FFT</forall>
+  </globalrobocopyoptions>
+  <pre>
+    <command>createZIPFile.cmd</command>
+  </pre>
+</backup>
