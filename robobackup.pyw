@@ -258,4 +258,4 @@ autostart = True
 if len(sys.argv) == 2:
     if sys.argv[1] == "-nogui":
         autostart = False
-BackupGuiTk(ask = autostart, method=backup).mainloop()
+BackupGuiTk(ask = autostart, method=backup)
