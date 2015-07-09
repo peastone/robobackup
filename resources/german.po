@@ -1,76 +1,137 @@
 msgid ""
 msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-06 18:22+0200\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=cp1252\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: pygettext.py 1.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Language: de_DE\n"
+"X-Source-Language: en\n"
 
-msgid "Start Backup now?"
-msgstr "Backup jetzt starten?"
+#: ../__main__.py:76 ../qtgui.py:53
+msgid "Critical"
+msgstr "Schwerwiegender Fehler"
 
-msgid "Save"
-msgstr "Speichern"
+#: ../__main__.py:76 ../qtgui.py:54
+msgid "Robobackup failed. Contact your admin."
+msgstr "Verst√§ndigen Sie den Administrator."
 
+#: ../parser_robobackup_xml.py:74
+msgid "Devicename "
+msgstr "Ger√§tename "
+
+#: ../parser_robobackup_xml.py:74
+msgid " not found"
+msgstr " nicht gefunden"
+
+#: ../parser_robobackup_xml.py:78
+msgid "Multiple devices with the same name found."
+msgstr "Mehrere Ger√§te mit demselben Namen gefunden."
+
+#: ../parser_robobackup_xml.py:102
+msgid " not specified correctly."
+msgstr " nicht richtig angegeben."
+
+#: ../parser_robobackup_xml.py:108
+msgid "Empty absolute path."
+msgstr "Leerer Absolutpfad."
+
+#: ../parser_robobackup_xml.py:139
+msgid " not present in configuration."
+msgstr "nicht in der Konfiguration vorhanden."
+
+#: ../parser_robobackup_xml.py:141
+msgid " set to default value: "
+msgstr " auf den Standardwert gesetzt: "
+
+#: ../parser_robobackup_xml.py:162
+msgid "Error parsing "
+msgstr "Fehler beim Einlesen "
+
+#: ../parser_robobackup_xml.py:167
+msgid " does not have <backup> as root-element"
+msgstr " hat <backup> nicht als Wurzel-Element"
+
+#: ../parser_robobackup_xml.py:298
+msgid "Wrong configuration. Truecrypt key not specified correctly"
+msgstr "Falsche Konfiguration. Truecypt-Schl√ºssel nicht richtig angegeben"
+
+#: ../parser_robobackup_xml.py:313
+msgid ""
+"Wrong configuration. Letter where to mount the Truecrypt image has a length "
+"unequal one."
+msgstr ""
+"Falsche Konfiguration. Laufwerksbuchstabe f√ºr Truecrypt ist kein Buchstabe."
+
+#: ../parser_robobackup_xml.py:365
+msgid "Minor error in configuration: create???Folder."
+msgstr "Kleiner Fehler in der Kofiguration: create???Folder."
+
+#: ../qtgui.py:23
+msgid "Start Backup"
+msgstr "Backup starten"
+
+#: ../qtgui.py:24 ../tkintergui.py:24
 msgid "Close"
-msgstr "Schlieﬂen"
+msgstr "Schlie√üen"
 
+#: ../qtgui.py:26
+msgid "Elapsed time:"
+msgstr "Vergangene Zeit:"
+
+#: ../qtgui.py:27
+msgid "Log:"
+msgstr "Log:"
+
+#: ../qtgui.py:96 ../tkintergui.py:36
 msgid "Success"
 msgstr "Erfolg"
 
+#: ../qtgui.py:99 ../tkintergui.py:44
+msgid "Check backup"
+msgstr "Backup √ºberpr√ºfen"
+
+#: ../qtgui.py:102 ../tkintergui.py:40
 msgid "Failure"
 msgstr "Fehler"
 
-msgid "Check backup"
-msgstr "Backup ¸berpr¸fen"
+#: ../qtgui.py:104
+msgid "Color does not match an action."
+msgstr "Farbe passt nicht zu einer Aktion."
 
-msgid "Text files"
-msgstr "Textdateien"
+#: ../robobackup.py:48
+msgid "Error creating folder: "
+msgstr "Fehler beim Erstellen des Ordners: "
 
-msgid "ERROR parsing robobackup-configuration.xml"
-msgstr "FEHLER beim Einlesen von robobackup-configuration.xml"
+#: ../robobackup.py:55
+msgid "Backup is started."
+msgstr "Backup wurde gestartet."
 
-msgid "robobackup-configuration.xml does not have <backup> as root-element"
-msgstr "<backup> ist nicht das Wurzelelement in robobackup-configuration.xml"
+#: ../robobackup.py:58
+msgid "The configuration is read."
+msgstr "Die Konfiguration wird eingelesen."
 
-msgid "Backup started"
-msgstr "Backup gestartet."
-
-msgid "Wrong configuration: Backupmedium//mediumtype//.. not specified correctly."
-msgstr "Falsche Einstellung: Backupmedium//mediumtype//.. nicht korrekt."
-
-msgid "Wrong configuration: drivename not specified correctly."
-msgstr "Falsche Einstellung: drivename nicht korrekt."
-
-msgid "Wrong configuration: pathondrive not specified correctly."
-msgstr "Falsche Einstellung: pathondrive nicht korrekt."
-
-msgid " not found: Did you forget to plug in your USB stick? Is a network folder missing?"
-msgstr " nicht gefunden: Haben Sie vergessen Ihren USB Stick einzustecken? Fehlt ein Netzwerkordner?"
-
-msgid "Devicename "
-msgstr "Speichermediumsname "
-
-msgid "minErrorToReport not specified in configuration. It is set to 1."
-msgstr "minErrorToReport wurde nicht festgelegt. minErrorToReport ist nun 1."
-
-msgid "ERROR creating log folder: "
-msgstr "FEHLER beim Erstellen des Logdateien-Ordners: "
-
-msgid "ERROR creating destination folder: "
-msgstr "FEHLER beim Erstellen des Zielordners: "
-
-msgid "Wrong configuration: item did not contain a valid path"
-msgstr "Falsche Einstellung: item beinhaltet keinen korrekten path (Pfad)"
-
+#: ../robobackup.py:128
 msgid "Neither file nor folder: "
 msgstr "Weder Datei noch Ordner: "
 
+#: ../robobackup.py:129
 msgid "The item was not copied."
-msgstr "Das Ding wurde nicht kopiert."
+msgstr "Die Datei wurde nicht kopiert."
 
-msgid "Robobackup ended successfully."
-msgstr "Robobackup erfolgreich beendet."
+#: ../robobackup.py:166
+msgid "Backup is finished."
+msgstr "Das Backup wurde beendet."
 
-msgid "Some copy orders have not been executed. Contact you administrator, if you don't know why."
-msgstr "Einige Kopierauftr‰ge wurden nicht ausgef¸hrt. Kontaktieren Sie Ihren Administrator, wenn Sie nicht wissen warum."
+#: ../tkintergui.py:22
+msgid "Save"
+msgstr "Sichern"
 
+#: ../tkintergui.py:30
+msgid "Start Backup now?"
+msgstr "Backup jetzt starten?"
+
+#: ../tkintergui.py:51
+msgid "Text files"
+msgstr "Textdateien"
