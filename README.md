@@ -9,8 +9,36 @@ operating system.
 Robobackup is free software and may be changed and used according to the
 information given in the LICENSE file.
 
+Installation
+------------
+
+1. Install Python.
+2. Install defusedxml for parsing the configuration file.
+3. Install PyQt for the graphical user interface.
+4. Install Truecrypt for encryption (optional, only if you use it).
+5. Edit your configuration file (see next section). For that I recommend XML Notepad 2007
+
+To install defusedxml, execute one of these commands:
+```
+pip install defusedxml (from internet)
+pip install defusedxml-0.4.1.zip (this file in the current working directory)
+```
+
+Robobackup was developed with the following software in mind:
+
+| Software | Version | Download link | SHA1 (64bit version) |
+| ------------- |:-------------:| -------------|------------|
+| Python        | 3.4.3 | https://www.python.org/downloads/release/python-343/      |SHA1(python-3.4.3.amd64.msi)= 8f2e4453dcdf424f15b14b2eda127e76fad4207f|
+| defusedxml    | 0.4.1 | https://pypi.python.org/pypi/defusedxml| SHA1(defusedxml-0.4.1.zip)= d24866fadad6e5bd771757437af2c392f627c3ca|
+| PyQt          | 5.4.2 | http://www.riverbankcomputing.com/software/pyqt/download5 |SHA1(PyQt5-5.4.2-gpl-Py3.4-Qt5.4.2-x64.exe)= 8ab016bc8b2f9d0c24370e52939bc51165c56927|
+| Truecrypt     | 7.1a | http://www.heise.de/download/truecrypt.html               |SHA1(truecrypt_setup_7.1a.exe)= 7689d038c76bd1df695d295c026961e50e4a62ea|
+| XML Notepad 2007 | 2.5 | http://www.heise.de/download/xml-notepad.html | SHA1(XmlNotepad.msi)= 31b728ddafaffaece76ceefe7d2be9e1a37c8a4b |
+
 Sample configuration
 --------------------
+For editing the configuration, I like XML Notepad 2007:
+http://www.heise.de/download/xml-notepad.html
+
 A template can be found in robobackup-configuration.xml.
 
 Assume, you want to backup the two folders "MyPictures" (on drive C) and "MyMovies" (on drive D)
