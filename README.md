@@ -36,8 +36,7 @@ Robobackup was developed with the following software in mind:
 
 Sample configuration
 --------------------
-For editing the configuration, I like XML Notepad 2007:
-http://www.heise.de/download/xml-notepad.html
+For editing the configuration, I like XML Notepad 2007 (see section "Installation")
 
 A template can be found in robobackup-configuration.xml.
 
@@ -92,8 +91,32 @@ Robocopy options can be obtained by executing
 ```
 
 in the shell (>:). 
-Please look into the code for further explanation. You are welcome to write further examples for
-this section.
+
+If you are prone to losing harddrives you may find the Truecrypt option helpful. The path to the Truecrypt binary must be given (depending upon your installation). You can specify the image you want to mount either as external of absolute medium. This holds also true for the keyfile. Note, that you can leave out either ```<key//file>``` or ```<key//word>```, depending upon your Truecrypt image. The letter tells Truecrypt where to mount the image to. Please take a letter that you know is free to use.
+```
+<truecrypt>
+  <truecryptbin>"C:\Program Files\Truecrypt\Truecrypt.exe"</truecryptbin>
+  <mount>
+    <imagetomount>
+      <external>
+        <drivename>USBBackup</drivename>
+        <pathondrive>image.tc</pathondrive>
+      </external>
+    </imagetomount>
+    <key>
+      <word>secret</word>
+      <file>
+        <external>
+          <drivename>USBKey</drivename>
+          <pathondrive>key.txt</pathondrive>
+        </external>
+      </file>
+    </key>
+    <letter>f</letter>
+  </mount>
+</truecrypt>
+```
+In case of questions, please look at the python code. It is the best documentation.
 
 Future developments
 -------------------
@@ -118,9 +141,3 @@ It will be great, if you:
 - translate as much as you can
 - add docstrings to describe all relevant classes, methods and functions
 - take care of appropriate error handling (if you spot something new, try to patch it)
-
-Picture credit
---------------
-
-Now all pictures for Robobackup have been created by myself. I release
-them into public domain. You can easily adapt them.
