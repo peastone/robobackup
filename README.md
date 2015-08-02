@@ -118,6 +118,12 @@ If you are prone to losing harddrives you may find the Truecrypt option helpful.
 ```
 In case of questions, please look at the python code. It is the best documentation.
 
+Useful tools in combination with Robobackup
+-------------------------------------------
+In an email exchange, Axel Vahldiek showed to me a great tool (USBDLM) for the automatic assignment of drive letters. It is especially useful, if your USB device has a serial number. Thus, you can expect to address the device with the same drive letter again and again.
+You can find USBDLM here:
+http://www.heise.de/download/usb-drive-letter-manager-usbdlm.html
+
 Future developments
 -------------------
 
