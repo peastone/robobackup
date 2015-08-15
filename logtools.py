@@ -77,6 +77,13 @@ class Logbook():
         """
         self._logger_.debug(msg)
 
+    def exception(self, msg):
+        """
+        Logs an exception.
+        This method should only be called from an exception handler.
+        """
+        self._logger_.exception(msg)
+
     def get_severity(self):
         """
         Get an error assessment. If there are no errors and warnings,
