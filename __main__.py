@@ -20,6 +20,7 @@ import os, sys
 import gettext
 import time, datetime
 import logging, logtools
+from logtools import Level
 from qtgui import BackupGuiQt
 from PyQt5 import QtWidgets
 from robobackup import backup
@@ -51,8 +52,8 @@ if __name__ == "__main__":
         # A Logbook is used to handle errors througout the remaining
         # program.
         logger = logging.getLogger(__name__)
-        logger.setLevel(logging.DEBUG)
         logbook = logtools.Logbook(logger, LOGFILE)
+        logbook.setLevel(Level.DEBUG)
 
         # install translation
         translation = gettext.translation("robobackup", \

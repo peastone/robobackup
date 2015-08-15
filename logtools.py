@@ -24,6 +24,16 @@ class Severity(Enum):
     orange = 1
     red = 2
 
+class Level(Enum):
+    CRITICAL = logging.CRITICAL
+    FATAL = logging.FATAL
+    ERROR = logging.ERROR
+    WARNING = logging.WARNING
+    WARN = logging.WARN
+    INFO = logging.INFO
+    DEBUG = logging.DEBUG
+    NOTSET = logging.NOTSET
+
 class Logbook():
     """
     The class Logbook extends the standard python logging by counting
@@ -41,6 +51,9 @@ class Logbook():
             "[%(levelname)s] (%(asctime)s) %(message)s")
         handler.setFormatter(formatter)
         logger.addHandler(handler)
+
+    def setLevel(self, level):
+        self._logger_.setLevel(level.value)
 
     def critical(self, msg):
         """
