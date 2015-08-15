@@ -47,8 +47,6 @@ if __name__ == "__main__":
             os.makedirs(LOGDIR)
         LOGFILE = os.path.join(LOGDIR, "robobackup" + TIMESTAMP + \
             os.extsep + "txt")
-
-        # setup logging
         logbook.set_logfile(LOGFILE)
         logbook.set_level(Level.DEBUG)
 
