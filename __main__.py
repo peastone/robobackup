@@ -69,12 +69,12 @@ if __name__ == "__main__":
 
         if startgui:
             qtapp = QtWidgets.QApplication(sys.argv)
-            widget = BackupGuiQt(method=backup, logbook=logbook)
+            widget = BackupGuiQt(method=backup)
             logbook.register_observer(widget)
             widget.show() # pylint: disable=no-member
             sys.exit(qtapp.exec_())
         else:
-            backup(logbook)
+            backup()
 
     except SystemExit:
         # SystemExit is fired, when exit is called. This can happen by

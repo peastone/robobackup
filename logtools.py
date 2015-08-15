@@ -20,7 +20,7 @@ import logging
 from enum import Enum
 from io import StringIO
 
-__all__ = [Severity, Level, Logbook, logbook]
+__all__ = ["Severity", "Level", "Logbook", "logbook"]
 
 class Severity(Enum):
     """ Enum ensuring type-safety for Severity """
@@ -45,10 +45,10 @@ class Logbook():
     the number of errors and warnings that have occured. Based on
     these findings, the severity of the logged problems is assessed.
     """
-    def __init__(self):
+    def __init__(self, name="robobackup"):
         self._num_warnings_ = 0
         self._num_errors_ = 0
-        self._logger_ = logging.getLogger("robobackup")
+        self._logger_ = logging.getLogger(name)
 
         self._formatter_ = logging.Formatter(\
             "[%(levelname)s] (%(asctime)s) %(message)s")

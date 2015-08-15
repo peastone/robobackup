@@ -21,17 +21,16 @@ from PyQt5 import QtWidgets, uic, QtCore
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.Qt import QPixmap
 from PyQt5.QtWidgets import QMessageBox
-from logtools import Severity
+from logtools import Severity, logbook
 import os
 
 class BackupGuiQt(QtWidgets.QWidget):
     """
     The main widget of the robobackup GUI.
     """
-    def __init__(self, method, logbook, *args, **kwargs):
+    def __init__(self, method, *args, **kwargs):
         super(BackupGuiQt, self).__init__(*args, **kwargs)
         self._method_ = method
-        self._logbook_ = logbook
         self._gui_ = uic.loadUi(os.path.join(os.path.dirname(\
             os.path.relpath(__file__)), "ui", "robobackup-gui.ui"), \
             self)
@@ -58,7 +57,7 @@ class BackupGuiQt(QtWidgets.QWidget):
             self._gui_.btnStart.setEnabled(False)
             self._gui_.btnClose.setEnabled(False)
             self._time_.start()
-            self._method_(self._logbook_)
+            self._method_()
             self._timer_.timeout.disconnect(self.__show_time)
             self._gui_.btnClose.setEnabled(True)
         except:
@@ -97,9 +96,9 @@ class BackupGuiQt(QtWidgets.QWidget):
         This method is used as a slot to which the signal "fileChanged"
         of the filesystem watcher is connected to.
         """
-        color = self._logbook_.get_severity()
+        color = logbook.get_severity()
         self.__set_color(color.name)
-        self._gui_.log.setText(self._logbook_.get_string())
+        self._gui_.log.setText(logbook.get_string())
         if color is Severity.green:
             self.__set_image("SUCCESS.png")
             self.__set_status(_("Success"))

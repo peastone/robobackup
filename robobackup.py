@@ -19,6 +19,7 @@ from subprocess import call
 from os.path import isdir
 from os.path import isfile
 from datetime import date
+from logtools import logbook
 import os
 import multiprocessing as mp
 
@@ -32,7 +33,7 @@ def exec_shell_cmd(command):
     """
     return call(command, shell=True)
 
-def check_cmd_results(commands, results, logbook, minerror=1):
+def check_cmd_results(commands, results, minerror=1):
     """
     Works on two lists: commands and results. If the results (return
     codes) are bigger than minerror, it will be jotted down in the
@@ -47,14 +48,14 @@ def check_cmd_results(commands, results, logbook, minerror=1):
                 if y >= minerror]
         logbook.critical(failed_cmds_and_error_code)
 
-def exec_cmds_and_check(pool, cmds, logbook):
+def exec_cmds_and_check(pool, cmds):
     """
     Executes cmds and checks results.
     """
     results = pool.map(exec_shell_cmd, cmds)
-    check_cmd_results(cmds, results, logbook)
+    check_cmd_results(cmds, results)
 
-def create_folder(path, logbook):
+def create_folder(path):
     """
     Creates a folder in a given path. If an error occurs, it will be
     noted and and exception will be raised.
@@ -65,7 +66,7 @@ def create_folder(path, logbook):
     except os.error:
         logbook.critical(_("Error creating folder: ") + path)
 
-def backup(logbook):
+def backup():
     """
     Main function. It will do the backup. If it fails badly, an
     exception will be raised.
@@ -74,7 +75,7 @@ def backup(logbook):
 
     # read options from the XML
     logbook.info(_("The configuration is read."))
-    parser = Parser(logbook)
+    parser = Parser()
     options = parser.parse(GlobalOptionsInlet())
     truecrypt = parser.parse(TruecryptInlet())
     pre_commands = parser.parse(PreCommandInlet())
@@ -86,10 +87,10 @@ def backup(logbook):
     pool = mp.Pool(processes=options["nrprocesses"]) # pylint: disable=no-member
 
     # mount crypto volumes
-    exec_cmds_and_check(pool, truecrypt["truecryptmounts"], logbook)
+    exec_cmds_and_check(pool, truecrypt["truecryptmounts"])
 
     # execute commands before the backup
-    exec_cmds_and_check(pool, pre_commands, logbook)
+    exec_cmds_and_check(pool, pre_commands)
 
     # backup all items
     for item in items:
@@ -107,11 +108,11 @@ def backup(logbook):
             logdir = os.path.join(dest["path"], dest["relpathlogs"])
             logfile = os.path.join(logdir, "log" + str(date.today()) + \
                 os.extsep + "txt")
-            create_folder(logdir, logbook)
+            create_folder(logdir)
 
             destdir = os.path.join(dest["path"], item["relative"], \
                 item["dately"])
-            create_folder(destdir, logbook)
+            create_folder(destdir)
 
             execrobo = True
             # construct "source destination filespec"
@@ -163,14 +164,14 @@ def backup(logbook):
                 robocmdlist.append(robocommand)
 
         results_robocmdlist = pool.map(exec_shell_cmd, robocmdlist)
-        check_cmd_results(robocmdlist, results_robocmdlist, logbook, \
+        check_cmd_results(robocmdlist, results_robocmdlist, \
             minerror=options["errorlevel"])
 
     # execute commandos after the backup
-    exec_cmds_and_check(pool, post_commands, logbook)
+    exec_cmds_and_check(pool, post_commands)
 
     # unmount crypto volumes
-    exec_cmds_and_check(pool, truecrypt["truecryptunmounts"], logbook)
+    exec_cmds_and_check(pool, truecrypt["truecryptunmounts"])
 
     logbook.info(_("Backup is finished."))
     return

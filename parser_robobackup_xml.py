@@ -19,6 +19,7 @@ from defusedxml.ElementTree import parse
 from subprocess import check_output, CalledProcessError
 from datetime import date
 from collections import defaultdict
+from logtools import logbook
 import os
 
 def strip(string):
@@ -31,7 +32,7 @@ def strip(string):
     else:
         return ""
 
-def get_dict_drivename_to_letter(logbook):
+def get_dict_drivename_to_letter():
     """
     Returns {<drivename1>: [<driveletter1>, ...], ...}
     The drivenames are lower case to get distinct dictionary keys.
@@ -75,7 +76,7 @@ def get_dict_drivename_to_letter(logbook):
                     list_letter_name[0])
     return dict(dict_drivename_to_letter)
 
-def get_driveletter(drivename, logbook):
+def get_driveletter(drivename):
     """
     Returns the corresponding drive letter to the drive name.
     If multiple drives have the same drive name, an exception will be
@@ -84,7 +85,7 @@ def get_driveletter(drivename, logbook):
     will be returned.
     """
     drivename = drivename.lower()
-    device_names = get_dict_drivename_to_letter(logbook)
+    device_names = get_dict_drivename_to_letter()
     driveletterlist = device_names[drivename]
     driveletterlist_length = len(driveletterlist)
     if driveletterlist_length == 0:
@@ -103,7 +104,7 @@ def get_list(root, key):
     """
     return [strip(x.text) for x in root.findall(key)]
 
-def parse_location(mediumtype, logbook, mediumtypekeyname="mediumtype"):
+def parse_location(mediumtype, mediumtypekeyname="mediumtype"):
     """
     Returns the path to a data location. This location may be specified
     either as external device or absolute path. None will be returned,
@@ -137,7 +138,7 @@ def parse_location(mediumtype, logbook, mediumtypekeyname="mediumtype"):
         pathondrive = get_content(external, "pathondrive", \
             logfunction=logbook.info).lower()
 
-        path = get_driveletter(name, logbook)
+        path = get_driveletter(name)
         if path != None:
             path += ":\\" + pathondrive
 
@@ -167,8 +168,7 @@ class Parser():
     """
     Parser reads the XML config file and does some checks.
     """
-    def __init__(self, logbook):
-        self._logbook_ = logbook
+    def __init__(self):
         self._configuration_file_ = "robobackup-configuration.xml"
         # parse robobackup-configuration.xml
         # check root element
@@ -178,39 +178,37 @@ class Parser():
                 self._configuration_file_)
             etree = parse(path)
         except: # pylint: disable=bare-except
-            self._logbook_.critical(_("Error parsing ") + \
+            logbook.critical(_("Error parsing ") + \
                 self._configuration_file_)
         self._root_ = etree.getroot()
         if self._root_.tag != "backup":
-            self._logbook_.critical(self._configuration_file_ + \
+            logbook.critical(self._configuration_file_ + \
                 _(" does not have <backup> as root-element"))
     def parse(self, inlet):
         """
         Depending on what you want to parse, multiple inlets can be
         fed to Parser.
         """
-        return inlet.execute(self._root_, self._logbook_)
+        return inlet.execute(self._root_)
 
 class PreCommandInlet():
-    def execute(self, root, logbook):
+    def execute(self, root):
         """
         Returns the list of commands to run before the backup.
         If the XML contains no commands, an empty list [] is returned.
         """
-        _ = logbook
         return get_list(root, ".//pre//command")
 
 class PostCommandInlet():
-    def execute(self, root, logbook):
+    def execute(self, root):
         """
         Returns the list of commands to run after the backup.
         If the XML contains no commands, an empty list [] is returned.
         """
-        _ = logbook
         return get_list(root, ".//post//command")
 
 class GlobalOptionsInlet():
-    def execute(self, root, logbook):
+    def execute(self, root):
         """
         Returns a dictionary which contains the global options
         like minimum errorlevel and global commandline options.
@@ -248,7 +246,7 @@ class GlobalOptionsInlet():
             "nrprocesses": nrprocesses}
 
 class BackupmediaInlet():
-    def execute(self, root, logbook):
+    def execute(self, root):
         """
         Returns a list of all destinations. Each destination is
         represented as a dictionary.
@@ -271,7 +269,7 @@ class BackupmediaInlet():
                 logfunction=logbook.debug)
 
             # parse path and append the dictionary to destinations
-            path = parse_location(child, logbook)
+            path = parse_location(child)
             if path != None:
                 destinations.append({"path": path, \
                     "relpathlogs": logfolder, \
@@ -280,7 +278,7 @@ class BackupmediaInlet():
         return destinations
 
 class TruecryptInlet():
-    def execute(self, root, logbook):
+    def execute(self, root):
         """
         Returns a dictionary with two lists of Truecrypt commands.
         One list is for mounting crypto volumes, the other is for
@@ -298,14 +296,14 @@ class TruecryptInlet():
 
             for child in root.findall(".//truecrypt//mount"):
 
-                pathtoimage = parse_location(child, logbook, \
+                pathtoimage = parse_location(child, \
                     mediumtypekeyname="imagetomount")
                 if pathtoimage == None:
                     continue
 
                 keyfile = None
                 if child.find("key//file") != None:
-                    keyfile = parse_location(child, logbook, \
+                    keyfile = parse_location(child, \
                         mediumtypekeyname="key//file")
 
                 keyword = get_content(child, "key//word", \
@@ -345,7 +343,7 @@ class TruecryptInlet():
             "truecryptunmounts": truecryptunmounts}
 
 class ItemInlet():
-    def execute(self, root, logbook):
+    def execute(self, root):
         """
         Returns a list of all items. Each item is stored
         as a dictionary.
