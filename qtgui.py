@@ -21,6 +21,7 @@ from PyQt5 import QtWidgets, uic, QtCore
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.Qt import QPixmap
 from PyQt5.QtWidgets import QMessageBox
+from logtools import Severity
 import os
 
 class BackupGuiQt(QtWidgets.QWidget):
@@ -103,16 +104,16 @@ class BackupGuiQt(QtWidgets.QWidget):
         of the filesystem watcher is connected to.
         """
         color = self._logbook_.get_severity()
-        self.__set_color(color)
+        self.__set_color(color.name)
         with open(self._logbook_.logfile, 'r') as logfile:
             self._gui_.log.setText(logfile.read())
-        if color == "green":
+        if color is Severity.green:
             self.__set_image("SUCCESS.png")
             self.__set_status(_("Success"))
-        elif color == "orange":
+        elif color is Severity.orange:
             self.__set_image("CHECK.png")
             self.__set_status(_("Check backup"))
-        elif color == "red":
+        elif color is Severity.red:
             self.__set_image("FAIL.png")
             self.__set_status(_("Failure"))
         else:

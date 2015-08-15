@@ -17,6 +17,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import logging
+from enum import Enum
+
+class Severity(Enum):
+    green = 0
+    orange = 1
+    red = 2
 
 class Logbook():
     """
@@ -78,9 +84,9 @@ class Logbook():
         if there are warnings only. A "red" evaluation will follow as
         soon as an error is counted.
         """
-        ret = "green"
+        ret = Severity.green
         if self._num_warnings_ > 0:
-            ret = "orange"
+            ret = Severity.orange
         if self._num_errors_ > 0:
-            ret = "red"
+            ret = Severity.red
         return ret
