@@ -53,7 +53,7 @@ if __name__ == "__main__":
         # program.
         logger = logging.getLogger(__name__)
         logbook = logtools.Logbook(logger, LOGFILE)
-        logbook.setLevel(Level.DEBUG)
+        logbook.set_level(Level.DEBUG)
 
         # install translation
         translation = gettext.translation("robobackup", \
@@ -73,6 +73,7 @@ if __name__ == "__main__":
         if startgui:
             qtapp = QtWidgets.QApplication(sys.argv)
             widget = BackupGuiQt(method=backup, logbook=logbook)
+            logbook.register_observer(widget)
             widget.show() # pylint: disable=no-member
             sys.exit(qtapp.exec_())
         else:

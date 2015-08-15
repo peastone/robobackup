@@ -43,10 +43,6 @@ class BackupGuiQt(QtWidgets.QWidget):
         self._gui_.logLabel.setText(_("Log:"))
         self._gui_.btnStart.clicked.connect(self.__clk)
         self._gui_.btnClose.clicked.connect(self.__cls)
-        self._filesystemwatcher_ = QtCore.QFileSystemWatcher(\
-            [logbook.logfile])
-        self._filesystemwatcher_.fileChanged.connect(\
-            self.__logfile_changed)
         self._timer_ = QtCore.QTimer()
         self._timer_.timeout.connect(self.__show_time)
         self._timer_.start(1000)
@@ -97,16 +93,14 @@ class BackupGuiQt(QtWidgets.QWidget):
             mm=minutes, ss=seconds)
         self._gui_.lcd.display(digitalclock)
 
-    @pyqtSlot()
-    def __logfile_changed(self):
+    def update(self):
         """
         This method is used as a slot to which the signal "fileChanged"
         of the filesystem watcher is connected to.
         """
         color = self._logbook_.get_severity()
         self.__set_color(color.name)
-        with open(self._logbook_.logfile, 'r') as logfile:
-            self._gui_.log.setText(logfile.read())
+        self._gui_.log.setText(self._logbook_.get_string())
         if color is Severity.green:
             self.__set_image("SUCCESS.png")
             self.__set_status(_("Success"))

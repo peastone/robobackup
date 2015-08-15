@@ -18,13 +18,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
 from enum import Enum
+from io import StringIO
 
 class Severity(Enum):
+    """ Enum ensuring type-safety for Severity """
     green = 0
     orange = 1
     red = 2
 
 class Level(Enum):
+    """ Enum ensuring type-safety for Level """
     CRITICAL = logging.CRITICAL
     FATAL = logging.FATAL
     ERROR = logging.ERROR
@@ -46,13 +49,39 @@ class Logbook():
         self._logger_ = logger
         self.logfile = logfile
 
-        handler = logging.FileHandler(logfile)
         formatter = logging.Formatter(\
             "[%(levelname)s] (%(asctime)s) %(message)s")
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
+        file_handler = logging.FileHandler(logfile)
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
 
-    def setLevel(self, level):
+        self._stringio_ = StringIO()
+        self._stream_handler_ = logging.StreamHandler(self._stringio_)
+        self._stream_handler_.setFormatter(formatter)
+        logger.addHandler(self._stream_handler_)
+
+        self._observers_ = []
+
+    def register_observer(self, obs):
+        """ Add an event observer to the list of observers. """
+        self._observers_.append(obs)
+
+    def remove_observer(self, obs):
+        """ Remove an event observer from the list of observers. """
+        self._observers_.remove(obs)
+
+    def notify_observers(self):
+        """ Notify all observers in the list. """
+        for obs in self._observers_:
+            obs.update()
+
+    def get_string(self):
+        """ Get log as string. """
+        self._stream_handler_.flush()
+        return self._stringio_.getvalue()
+
+    def set_level(self, level):
+        """ Set threshold for events being logged. """
         self._logger_.setLevel(level.value)
 
     def critical(self, msg):
@@ -62,6 +91,7 @@ class Logbook():
         """
         self._num_errors_ += 1
         self._logger_.critical(msg)
+        self.notify_observers()
         raise RuntimeError(msg)
 
     def error(self, msg):
@@ -70,6 +100,7 @@ class Logbook():
         """
         self._num_errors_ += 1
         self._logger_.error(msg)
+        self.notify_observers()
 
     def warning(self, msg):
         """
@@ -77,18 +108,21 @@ class Logbook():
         """
         self._num_warnings_ += 1
         self._logger_.warning(msg)
+        self.notify_observers()
 
     def info(self, msg):
         """
         Log an info.
         """
         self._logger_.info(msg)
+        self.notify_observers()
 
     def debug(self, msg):
         """
         Log a debug message.
         """
         self._logger_.debug(msg)
+        self.notify_observers()
 
     def exception(self, msg):
         """
@@ -96,6 +130,7 @@ class Logbook():
         This method should only be called from an exception handler.
         """
         self._logger_.exception(msg)
+        self.notify_observers()
 
     def get_severity(self):
         """
