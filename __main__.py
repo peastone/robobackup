@@ -19,8 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import os, sys
 import gettext
 import time, datetime
-import logging, logtools
-from logtools import Level
+from logtools import logbook, Level
 from qtgui import BackupGuiQt
 from PyQt5 import QtWidgets
 from robobackup import backup
@@ -49,10 +48,8 @@ if __name__ == "__main__":
         LOGFILE = os.path.join(LOGDIR, "robobackup" + TIMESTAMP + \
             os.extsep + "txt")
 
-        # A Logbook is used to handle errors througout the remaining
-        # program.
-        logger = logging.getLogger(__name__)
-        logbook = logtools.Logbook(logger, LOGFILE)
+        # setup logging
+        logbook.set_logfile(LOGFILE)
         logbook.set_level(Level.DEBUG)
 
         # install translation

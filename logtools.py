@@ -20,6 +20,8 @@ import logging
 from enum import Enum
 from io import StringIO
 
+__all__ = [Severity, Level, Logbook, logbook]
+
 class Severity(Enum):
     """ Enum ensuring type-safety for Severity """
     green = 0
@@ -43,22 +45,18 @@ class Logbook():
     the number of errors and warnings that have occured. Based on
     these findings, the severity of the logged problems is assessed.
     """
-    def __init__(self, logger, logfile):
+    def __init__(self):
         self._num_warnings_ = 0
         self._num_errors_ = 0
-        self._logger_ = logger
-        self.logfile = logfile
+        self._logger_ = logging.getLogger("robobackup")
 
-        formatter = logging.Formatter(\
+        self._formatter_ = logging.Formatter(\
             "[%(levelname)s] (%(asctime)s) %(message)s")
-        file_handler = logging.FileHandler(logfile)
-        file_handler.setFormatter(formatter)
-        logger.addHandler(file_handler)
 
         self._stringio_ = StringIO()
         self._stream_handler_ = logging.StreamHandler(self._stringio_)
-        self._stream_handler_.setFormatter(formatter)
-        logger.addHandler(self._stream_handler_)
+        self._stream_handler_.setFormatter(self._formatter_)
+        self._logger_.addHandler(self._stream_handler_)
 
         self._observers_ = []
 
@@ -74,6 +72,12 @@ class Logbook():
         """ Notify all observers in the list. """
         for obs in self._observers_:
             obs.update()
+
+    def set_logfile(self, logfile):
+        """ The logging will be written to logfile. """
+        file_handler = logging.FileHandler(logfile)
+        file_handler.setFormatter(self._formatter_)
+        self._logger_.addHandler(file_handler)
 
     def get_string(self):
         """ Get log as string. """
@@ -145,3 +149,5 @@ class Logbook():
         if self._num_errors_ > 0:
             ret = Severity.red
         return ret
+
+logbook = Logbook()
