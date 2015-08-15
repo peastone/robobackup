@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import multiprocessing
 import logging
 
 class Logbook():
@@ -26,11 +25,10 @@ class Logbook():
     these findings, the severity of the logged problems is assessed.
     """
     def __init__(self, logger, logfile):
-        self._num_warnings_ = multiprocessing.Value('i', 0) # pylint: disable=no-member
-        self._num_errors_ = multiprocessing.Value('i', 0) # pylint: disable=no-member
+        self._num_warnings_ = 0
+        self._num_errors_ = 0
         self._logger_ = logger
         self.logfile = logfile
-        self._lock_ = multiprocessing.Lock()
 
         handler = logging.FileHandler(logfile)
         formatter = logging.Formatter(\
@@ -43,42 +41,35 @@ class Logbook():
         Log a critical error, increase the error count and raise a
         RuntimeError.
         """
-        with self._num_errors_.get_lock():
-            self._num_errors_.value += 1
-            self._logger_.critical(msg)
+        self._num_errors_ += 1
+        self._logger_.critical(msg)
         raise RuntimeError(msg)
 
     def error(self, msg):
         """
         Log an error and increase the error count.
         """
-        with self._num_errors_.get_lock():
-            self._num_errors_.value += 1
-            self._logger_.error(msg)
+        self._num_errors_ += 1
+        self._logger_.error(msg)
 
     def warning(self, msg):
         """
         Log a warning and increase the warnings count.
         """
-        with self._num_warnings_.get_lock():
-            self._num_warnings_.value += 1
-            self._logger_.warning(msg)
+        self._num_warnings_ += 1
+        self._logger_.warning(msg)
 
     def info(self, msg):
         """
         Log an info.
         """
-        self._lock_.acquire()
         self._logger_.info(msg)
-        self._lock_.release()
 
     def debug(self, msg):
         """
         Log a debug message.
         """
-        self._lock_.acquire()
         self._logger_.debug(msg)
-        self._lock_.release()
 
     def get_severity(self):
         """
@@ -88,8 +79,8 @@ class Logbook():
         soon as an error is counted.
         """
         ret = "green"
-        if self._num_warnings_.value > 0:
+        if self._num_warnings_ > 0:
             ret = "orange"
-        if self._num_errors_.value > 0:
+        if self._num_errors_ > 0:
             ret = "red"
         return ret
