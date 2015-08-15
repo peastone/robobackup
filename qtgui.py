@@ -67,7 +67,6 @@ class BackupGuiQt(QtWidgets.QWidget):
             QMessageBox.Ok)
             self._timer_.timeout.disconnect(self.__show_time)
             self._gui_.btnClose.setEnabled(True)
-            raise
 
     @pyqtSlot()
     def __cls(self):
