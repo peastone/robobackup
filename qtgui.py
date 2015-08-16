@@ -55,17 +55,16 @@ class BackupGuiQt(QtWidgets.QWidget):
         This method starts the backup. It is a slot which is connected
         to the signal "click" of the button "btnStart".
         """
+        self._gui_.btnStart.setEnabled(False)
+        self._gui_.btnClose.setEnabled(False)
+        self._time_.start()
         try:
-            self._gui_.btnStart.setEnabled(False)
-            self._gui_.btnClose.setEnabled(False)
-            self._time_.start()
             self._method_()
-            self._timer_.timeout.disconnect(self.__show_time)
-            self._gui_.btnClose.setEnabled(True)
         except:
             QMessageBox.critical(self, _("Critical"), \
             _("Robobackup failed. Contact your admin."), \
             QMessageBox.Ok)
+        finally:
             self._timer_.timeout.disconnect(self.__show_time)
             self._gui_.btnClose.setEnabled(True)
 

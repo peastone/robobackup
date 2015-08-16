@@ -65,8 +65,9 @@ class BackupGuiTk(Frame):
             self.update()
             messagebox.showinfo(_("Critical"), _("Robobackup " \
                 "failed. Contact your admin."))
-        self.timeout = True
-        self.close.config(state="normal")
+        finally:
+            self.timeout = True
+            self.close.config(state="normal")
     def __cls(self):
         """
         This method is used to close the GUI.
