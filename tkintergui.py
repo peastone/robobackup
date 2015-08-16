@@ -32,7 +32,8 @@ class BackupGuiTk(Frame):
         self.picframe = Frame.__init__(self, master)
         self.master.title("Robobackup")
         self.image = PhotoImage()
-        self.image["file"] = os.path.join("resources", "ASK.png")
+        self.image["file"] = os.path.join(os.path.dirname(\
+            os.path.relpath(__file__)), "resources", "ASK.png")
         self.piclabel = Label(self.picframe, image=self.image)
         self.piclabel.grid(row=0, column=0, columnspan=4, rowspan=6)
         self.clocklabel = Label(self.picframe, text=_("Elapsed time:"))
