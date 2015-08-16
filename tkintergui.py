@@ -130,4 +130,6 @@ class BackupGuiTk(Frame):
         """
         Write text to the GUI.
         """
+#        self.text.clear()
+        self.text.delete("1.0", END)
         self.text.insert(END, log)
