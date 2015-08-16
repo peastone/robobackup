@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Qt GUI for Robobackup
 This file is part of Robobackup.
