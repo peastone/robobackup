@@ -26,7 +26,7 @@ import os
 
 class BackupGuiQt(QtWidgets.QWidget):
     """
-    The main widget of the robobackup GUI.
+    The main widget of the robobackup GUI made with Qt.
     """
     def __init__(self, method, *args, **kwargs):
         super(BackupGuiQt, self).__init__(*args, **kwargs)
@@ -81,20 +81,16 @@ class BackupGuiQt(QtWidgets.QWidget):
         The digital timer gets incremented.
         """
         milliseconds = self._time_.elapsed()
-        seconds = int(milliseconds / 1000)
-        milliseconds %= 1000
-        minutes = int(seconds / 60)
-        seconds %= 60
-        hours = int(minutes / 60)
-        minutes %= 60
+        seconds, milliseconds = divmod(milliseconds, 1000)
+        minutes, seconds = divmod(seconds, 60)
+        hours, minutes = divmod(minutes, 60)
         digitalclock = "{hh:02d}:{mm:02d}:{ss:02d}".format(hh=hours, \
             mm=minutes, ss=seconds)
         self._gui_.lcd.display(digitalclock)
 
     def update(self):
         """
-        This method is used as a slot to which the signal "fileChanged"
-        of the filesystem watcher is connected to.
+        This method will be called, if logs are changing.
         """
         color = logbook.get_severity()
         self.__set_color(color.name)
