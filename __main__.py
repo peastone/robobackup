@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """
 Robobackup is a tool for automating backups.
 This file is part of Robobackup.
@@ -25,6 +28,7 @@ from PyQt5 import QtWidgets
 from robobackup import backup
 import tkinter, tkinter.messagebox
 import signal
+import tkintergui
 
 # pylint: disable=invalid-name
 if __name__ == "__main__":
@@ -66,11 +70,17 @@ if __name__ == "__main__":
                 startgui = False
 
         if startgui:
-            qtapp = QtWidgets.QApplication(sys.argv)
-            widget = BackupGuiQt(method=backup)
-            logbook.register_observer(widget)
-            widget.show() # pylint: disable=no-member
-            sys.exit(qtapp.exec_())
+            qt = False
+            if qt:
+                qtapp = QtWidgets.QApplication(sys.argv)
+                widget = BackupGuiQt(method=backup)
+                logbook.register_observer(widget)
+                widget.show() # pylint: disable=no-member
+                sys.exit(qtapp.exec_())
+            else:
+                widget = tkintergui.BackupGuiTk(method=backup)
+                logbook.register_observer(widget)
+                widget.mainloop()
         else:
             backup()
 
