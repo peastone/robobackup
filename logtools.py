@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 This file is part of Robobackup.
 Copyright 2015 Siegfried Schoefer
