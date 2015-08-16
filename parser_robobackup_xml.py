@@ -86,8 +86,11 @@ def get_driveletter(drivename):
     """
     drivename = drivename.lower()
     device_names = get_dict_drivename_to_letter()
-    driveletterlist = device_names[drivename]
-    driveletterlist_length = len(driveletterlist)
+    try:
+        driveletterlist = device_names[drivename]
+        driveletterlist_length = len(driveletterlist)
+    except KeyError:
+        driveletterlist_length = 0
     if driveletterlist_length == 0:
         logbook.warning(_("Devicename ") + drivename + _(" not found"))
         return None
