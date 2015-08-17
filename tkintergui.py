@@ -63,6 +63,8 @@ class BackupGuiTk(Frame):
         try:
             self.method()
         except:
+            if __debug__:
+                logbook.exception("")
             messagebox.showinfo(_("Critical"), _("Robobackup " \
                 "failed. Contact your admin."))
         finally:

@@ -61,6 +61,8 @@ class BackupGuiQt(QtWidgets.QWidget):
         try:
             self._method_()
         except:
+            if __debug__:
+                logbook.exception("")
             QMessageBox.critical(self, _("Critical"), \
             _("Robobackup failed. Contact your admin."), \
             QMessageBox.Ok)
