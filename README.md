@@ -9,6 +9,8 @@ operating system.
 Robobackup is free software and may be changed and used according to the
 information given in the LICENSE file.
 
+![Robobackup GUI](img/gui-ok.png)
+
 Installation
 ------------
 
