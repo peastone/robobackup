@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 from defusedxml.ElementTree import parse
-from subprocess import check_output, CalledProcessError
+from subprocess import check_output, CalledProcessError, DEVNULL
 from datetime import date
 from collections import defaultdict
 from logtools import logbook
@@ -45,7 +45,7 @@ def get_dict_drivename_to_letter():
         # universal_newlines=True ensures that \r\n is replaced by \n
         # in the output
         wmicresult = check_output(wmiccmd, shell=True, \
-            universal_newlines=True)
+            universal_newlines=True, stderr=DEVNULL, stdin=DEVNULL)
     except CalledProcessError:
         logbook.critical(wmiccmd)
     # wmicresults is a table:
@@ -116,7 +116,7 @@ def parse_location(mediumtype, mediumtypekeyname="mediumtype"):
     if the external device is missing.
     """
     external = mediumtype.find(mediumtypekeyname + "//external")
-    absolute = mediumtype.find(mediumtypekeyname+ "//absolute")
+    absolute = mediumtype.find(mediumtypekeyname + "//absolute")
 
     # A data location must be gven as external device or absolute path.
     if ((external == None) and (absolute == None)) or \

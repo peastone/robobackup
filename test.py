@@ -27,7 +27,7 @@ import gettext
 
 import parser_robobackup_xml
 
-from subprocess import CalledProcessError
+from subprocess import CalledProcessError, DEVNULL
 
 class HelperFunctionsInParser(unittest.TestCase):
     def setUp(self):
@@ -48,7 +48,7 @@ class HelperFunctionsInParser(unittest.TestCase):
         dict_drivename_letter = parser_robobackup_xml.get_dict_drivename_to_letter()
         mock_check_output.assert_called_with(\
             "wmic logicaldisk get caption, volumename", \
-            shell=True, universal_newlines=True)
+            shell=True, universal_newlines=True, stderr=DEVNULL, stdin=DEVNULL)
         self.assertEqual(dict_drivename_letter, {'backup': ['E']})
 
     @mock.patch("parser_robobackup_xml.check_output")
@@ -59,7 +59,7 @@ class HelperFunctionsInParser(unittest.TestCase):
         dict_drivename_letter = parser_robobackup_xml.get_dict_drivename_to_letter()
         mock_check_output.assert_called_with(\
             "wmic logicaldisk get caption, volumename", \
-            shell=True, universal_newlines=True)
+            shell=True, universal_newlines=True, stderr=DEVNULL, stdin=DEVNULL)
         self.assertEqual(dict_drivename_letter, {'backup': ['E', 'F']})
 
     @mock.patch("parser_robobackup_xml.check_output")
@@ -70,7 +70,7 @@ class HelperFunctionsInParser(unittest.TestCase):
         dict_drivename_letter = parser_robobackup_xml.get_dict_drivename_to_letter()
         mock_check_output.assert_called_with(\
             "wmic logicaldisk get caption, volumename", \
-            shell=True, universal_newlines=True)
+            shell=True, universal_newlines=True, stderr=DEVNULL, stdin=DEVNULL)
         self.assertEqual(dict_drivename_letter, {})
 
     @mock.patch("parser_robobackup_xml.check_output")
@@ -79,7 +79,7 @@ class HelperFunctionsInParser(unittest.TestCase):
         dict_drivename_letter = parser_robobackup_xml.get_dict_drivename_to_letter()
         mock_check_output.assert_called_with(\
             "wmic logicaldisk get caption, volumename", \
-            shell=True, universal_newlines=True)
+            shell=True, universal_newlines=True, stderr=DEVNULL, stdin=DEVNULL)
         self.assertEqual(dict_drivename_letter, {})
 
     @mock.patch("parser_robobackup_xml.get_dict_drivename_to_letter")
