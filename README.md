@@ -14,7 +14,7 @@ Installation
 
 1. Install Python.
 2. Install defusedxml for parsing the configuration file.
-3. Install PyQt for the graphical user interface.
+3. Install PyQt for the graphical user interface (optional, only if you use it).
 4. Install Truecrypt for encryption (optional, only if you use it).
 5. Edit your configuration file (see next section). For that I recommend XML Notepad 2007
 
