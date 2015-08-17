@@ -23,12 +23,16 @@ import os, sys
 import gettext
 import time, datetime
 from logtools import logbook, Level
-from qtgui import BackupGuiQt
-from PyQt5 import QtWidgets
+try:
+    from qtgui import BackupGuiQt
+    from PyQt5 import QtWidgets
+    qt = True
+except ImportError:
+    import tkintergui
+    qt = False
 from robobackup import backup
 import tkinter, tkinter.messagebox
 import signal
-import tkintergui
 
 # pylint: disable=invalid-name
 if __name__ == "__main__":
@@ -70,7 +74,6 @@ if __name__ == "__main__":
                 startgui = False
 
         if startgui:
-            qt = False
             if qt:
                 qtapp = QtWidgets.QApplication(sys.argv)
                 widget = BackupGuiQt(method=backup)
