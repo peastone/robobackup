@@ -116,17 +116,17 @@ def parse_location(mediumtype, mediumtypekeyname="mediumtype"):
     if the external device is missing.
     """
     external = mediumtype.find(mediumtypekeyname + "//external")
-    absolute = mediumtype.find(mediumtypekeyname + "//absolute")
+    internal = mediumtype.find(mediumtypekeyname + "//internal")
 
-    # A data location must be gven as external device or absolute path.
-    if ((external == None) and (absolute == None)) or \
-        ((absolute != None) and (external != None)):
+    # A data location must be gven as external device or internal path.
+    if ((external == None) and (internal == None)) or \
+        ((internal != None) and (external != None)):
         logbook.critical(mediumtypekeyname + \
             _(" not specified correctly."))
 
-    # An absolute path is just read.
-    if absolute != None:
-        path = strip(absolute.text)
+    # An internal path is just read.
+    if internal != None:
+        path = strip(internal.text)
         if path == "":
             logbook.critical(_("Empty absolute path."))
         if not os.path.isabs(path):

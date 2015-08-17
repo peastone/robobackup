@@ -27,7 +27,7 @@
     <backupmedium>
       <logfolder>logs</logfolder>
       <mediumtype>
-        <absolute>Z:\backup\</absolute>
+        <internal>Z:\backup\</internal>
       </mediumtype>
       <robocopyoptions>/IPG:7</robocopyoptions>
     </backupmedium>

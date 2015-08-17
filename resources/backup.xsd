@@ -90,7 +90,7 @@
       <xs:element name="path" type="xs:string" minOccurs="1">
         <xs:annotation>
           <xs:documentation xml:lang="de-DE">Pfad zur Datei</xs:documentation>
-          <xs:documentation xml:lang="en">absolute path to the file</xs:documentation>
+          <xs:documentation xml:lang="en">path to the file</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="dateoption" type="createDatelyFolder" minOccurs="0">
@@ -153,10 +153,10 @@
       <xs:documentation xml:lang="en">mediumtype</xs:documentation>
     </xs:annotation>
     <xs:choice>
-      <xs:element name="absolute" type="xs:string">
+      <xs:element name="internal" type="xs:string">
         <xs:annotation>
-          <xs:documentation xml:lang="de-DE">absoluter Pfad</xs:documentation>
-          <xs:documentation xml:lang="en">absolute path</xs:documentation>
+          <xs:documentation xml:lang="de-DE">Pfad</xs:documentation>
+          <xs:documentation xml:lang="en">path</xs:documentation>
         </xs:annotation>
       </xs:element>
       <xs:element name="external" type="external">
