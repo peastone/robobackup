@@ -63,6 +63,7 @@ class BackupGuiQt(QtWidgets.QWidget):
         except:
             if __debug__:
                 logbook.exception("")
+            self.__set_backup_failure()
             QMessageBox.critical(self, _("Critical"), \
             _("Robobackup failed. Contact your admin."), \
             QMessageBox.Ok)
@@ -96,17 +97,13 @@ class BackupGuiQt(QtWidgets.QWidget):
         This method will be called, if logs are changing.
         """
         color = logbook.get_severity()
-        self.__set_color(color.name)
         self._gui_.log.setText(logbook.get_string())
         if color is Severity.green:
-            self.__set_image("SUCCESS.png")
-            self.__set_status(_("Success"))
+            self.__set_backup_success()
         elif color is Severity.orange:
-            self.__set_image("CHECK.png")
-            self.__set_status(_("Check backup"))
+            self.__set_backup_check()
         elif color is Severity.red:
-            self.__set_image("FAIL.png")
-            self.__set_status(_("Failure"))
+            self.__set_backup_failure()
         else:
             raise RuntimeError(_("Color does not match an action."))
 
@@ -133,3 +130,24 @@ class BackupGuiQt(QtWidgets.QWidget):
         """
         self._gui_.errorLabel.setStyleSheet(\
             "QLabel { background-color: " + color +"}")
+    def __set_backup_success(self):
+        """
+        Set everything green.
+        """
+        self.__set_image("SUCCESS.png")
+        self.__set_status(_("Success"))
+        self.__set_color("green")
+    def __set_backup_check(self):
+        """
+        Set everything orange.
+        """
+        self.__set_image("CHECK.png")
+        self.__set_status(_("Check backup"))
+        self.__set_color("orange")
+    def __set_backup_failure(self):
+        """
+        Set everything red.
+        """
+        self.__set_image("FAIL.png")
+        self.__set_status(_("Failure"))
+        self.__set_color("red")
