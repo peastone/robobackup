@@ -153,7 +153,7 @@ def get_content(root, key, logfunction, mustbedefined=False, \
     default_content_if_not_defined=""):
     """
     This function returns the text of the key element of root.
-    If the key element has no text, the default content ist set.
+    If the key element has no text, the default content is set.
     The log message varies, depending on mustbedefined.
     A custom log function can be given.
     """
@@ -301,6 +301,9 @@ class TruecryptInlet():
 
             for child in root.findall(".//truecrypt//mount"):
 
+                # pathtoimage == None 
+                # if external device is not available
+                # continue, a warning is issued by parse_location
                 pathtoimage = parse_location(child, \
                     mediumtypekeyname="imagetomount")
                 if pathtoimage == None:
@@ -310,20 +313,28 @@ class TruecryptInlet():
                 if child.find("key//file") != None:
                     keyfile = parse_location(child, \
                         mediumtypekeyname="key//file")
+                    # although defined not available, decryption will 
+                    # fail, thus continue
+                    if keyfile == "":
+                        continue
 
                 keyword = get_content(child, "key//word", \
                     logfunction=logbook.debug)
 
+                # skip mount if there are not keys
+                # a warning is issued
                 if (keyfile == None) and (keyword == ""):
                     logbook.warning(_("Wrong configuration. Truecrypt key not specified correctly"))
                     continue
 
+                # a password and a keyfile can occur simultaneously
                 authstring = ""
-                if keyfile != "":
+                if keyfile != None:
                     authstring += "/k " + keyfile + " "
-                if keyword != None:
+                if keyword != "":
                     authstring += "/p " + keyword
 
+                # letter specification for (un)mounting
                 letter = get_content(child, "letter", \
                     mustbedefined=True, \
                     logfunction=logbook.warning)
@@ -367,7 +378,7 @@ class ItemInlet():
                 logfunction=logbook.debug)
 
             # retrieve whether an extra folder should be created
-            # for every year, month, day
+            # for either for every year or every month or every day
             dately = ""
             checkdately = 0
             if child.find("dateoption//createYearlyFolder") != None:
