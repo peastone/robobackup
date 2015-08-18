@@ -378,7 +378,7 @@ class ItemInlet():
                 logfunction=logbook.debug)
 
             # retrieve whether an extra folder should be created
-            # for either for every year or every month or every day
+            # either each year or each month or each day
             dately = ""
             checkdately = 0
             if child.find("dateoption//createYearlyFolder") != None:
