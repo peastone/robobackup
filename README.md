@@ -97,7 +97,7 @@ in the shell (>:).
 If you are prone to losing harddrives you may find the Truecrypt option helpful. The path to the Truecrypt binary must be given (depending upon your installation). You can specify the image you want to mount either as external or internal medium. This holds also true for the keyfile. Note, that you can leave out either ```<key//file>``` or ```<key//word>```, depending upon your Truecrypt image. The letter tells Truecrypt where to mount the image to. Please take a letter that you know is free to use.
 ```
 <truecrypt>
-  <truecryptbin>"C:\Program Files\Truecrypt\Truecrypt.exe"</truecryptbin>
+  <truecryptbin>C:\Program Files\Truecrypt\Truecrypt.exe</truecryptbin>
   <mount>
     <imagetomount>
       <external>

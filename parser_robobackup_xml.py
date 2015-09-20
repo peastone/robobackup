@@ -245,9 +245,9 @@ class GlobalOptionsInlet():
             logfunction=logbook.info))
 
         return {"errorlevel": errorlevel, \
-            "globaloptions": globaloptions, \
-            "fileoptions": fileoptions, \
-            "folderoptions": folderoptions, \
+            "globaloptions": globaloptions.split(), \
+            "fileoptions": fileoptions.split(), \
+            "folderoptions": folderoptions.split(), \
             "nrprocesses": nrprocesses}
 
 class BackupmediaInlet():
@@ -278,7 +278,7 @@ class BackupmediaInlet():
             if path != None:
                 destinations.append({"path": path, \
                     "relpathlogs": logfolder, \
-                    "robocopyoptions": robocopyoptions})
+                    "robocopyoptions": robocopyoptions.split()})
 
         return destinations
 
@@ -301,7 +301,6 @@ class TruecryptInlet():
 
             for child in root.findall(".//truecrypt//mount"):
 
-                # pathtoimage == None 
                 # if external device is not available
                 # continue, a warning is issued by parse_location
                 pathtoimage = parse_location(child, \
@@ -313,7 +312,7 @@ class TruecryptInlet():
                 if child.find("key//file") != None:
                     keyfile = parse_location(child, \
                         mediumtypekeyname="key//file")
-                    # although defined not available, decryption will 
+                    # although defined not available, decryption will
                     # fail, thus continue
                     if keyfile == "":
                         continue
@@ -328,13 +327,15 @@ class TruecryptInlet():
                     continue
 
                 # a password and a keyfile can occur simultaneously
-                authstring = ""
+                auth = []
                 if keyfile != None:
-                    authstring += "/k " + keyfile + " "
+                    auth.extend(["/k", keyfile])
                 if keyword != "":
-                    authstring += "/p " + keyword
+                    auth.extend(["/p", keyword])
 
                 # letter specification for (un)mounting
+                mount = []
+                unmount = []
                 letter = get_content(child, "letter", \
                     mustbedefined=True, \
                     logfunction=logbook.warning)
@@ -343,17 +344,25 @@ class TruecryptInlet():
                         logbook.warning(_("Wrong configuration. Letter where to mount the Truecrypt image has a length unequal one."))
                         continue
                     letter = letter[0:1]
-                    mountstring = "/l " + letter
-                    unmountstring = "/d " + letter
+                    mount = ["/l", letter]
+                    unmount = ["/d", letter]
                 else:
                     continue
 
-                truecryptmounts.append(truecryptbinstring + " " + \
-                    "/v " + pathtoimage + " " + authstring + " " + \
-                    mountstring + " /q /s")
+                silent = ["/q", "/s"]
 
-                truecryptunmounts.append(truecryptbinstring + " " + \
-                    unmountstring + " /q /s")
+                truecryptmount = [truecryptbinstring]
+                truecryptmount.extend(["/v", pathtoimage])
+                truecryptmount.extend(auth)
+                truecryptmount.extend(mount)
+                truecryptmount.extend(silent)
+
+                truecryptunmount = [truecryptbinstring]
+                truecryptunmount.extend(unmount)
+                truecryptunmount.extend(silent)
+
+                truecryptmounts.append(truecryptmount)
+                truecryptunmounts.append(truecryptunmount)
 
         return {"truecryptmounts": truecryptmounts, \
             "truecryptunmounts": truecryptunmounts}
@@ -402,7 +411,7 @@ class ItemInlet():
                 logfunction=logbook.critical)
 
             items.append({"dately":dately, \
-                "robocopyoptions":robocopyoptions, \
+                "robocopyoptions":robocopyoptions.split(), \
                 "relative":relative, \
                 "path":item_path})
 

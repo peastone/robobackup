@@ -31,9 +31,9 @@ from parser_robobackup_xml import Parser, PreCommandInlet, \
 
 def exec_shell_cmd(command):
     """
-    Just a wrapper to call with option shell=True.
+    Just a wrapper to call.
     """
-    return call(command, shell=True)
+    return call(command)
 
 def check_cmd_results(commands, results, minerror=1):
     """
@@ -45,7 +45,8 @@ def check_cmd_results(commands, results, minerror=1):
     failed_cmds = [x for (x, y) in zip(commands, results) \
         if y >= minerror]
     if failed_cmds != []:
-        failed_cmds_and_error_code = [("cmd: " + x, "return code: " + \
+        failed_cmds_and_error_code = [("cmd: " + " ".join(x), \
+            "return code: " + \
             str(y)) for (x, y) in zip(commands, results) \
                 if y >= minerror]
         logbook.critical(failed_cmds_and_error_code)
@@ -122,20 +123,20 @@ def backup():
             #   robocopy srcdir dstdir <options>
             # - for files:
             #   robocopy srcdir dstdir filename <options>
-            robocommand = "robocopy "
+            robocommand = ["robocopy"]
 
             if isdir(itempath):
                 # os.path.dirname(itempath) will return the wrong path
                 # if the path specified in itempath does not end with
                 # a backslash "\"
-                robocommand += itempath + " " + destdir
+                robocommand.extend([itempath, destdir])
                 # add globaloptions for directories
-                robocommand += " " + options["folderoptions"]
+                robocommand.extend(options["folderoptions"])
             elif isfile(itempath):
-                robocommand += os.path.dirname(itempath) + " " + \
-                    destdir + " "  + os.path.basename(itempath)
+                robocommand.extend([os.path.dirname(itempath), \
+                    destdir, os.path.basename(itempath)])
                 # add globaloptions for files
-                robocommand += " " + options["fileoptions"]
+                robocommand.extend(options["fileoptions"])
             else:
                 logbook.warning(_("Neither file nor folder: ") + \
                     itempath + " " + _("The item was not copied."))
@@ -160,9 +161,11 @@ def backup():
                 # they do not overlap.
                 # The author of this code does not take any warranty
                 # that robocopy will always behave this way.
-                robocommand += " " + options["globaloptions"] + " " + \
-                    dest["robocopyoptions"] + " " + \
-                    item["robocopyoptions"] + "/LOG+:" + logfile
+                robocommand.extend(options["globaloptions"])
+                robocommand.extend(dest["robocopyoptions"])
+                robocommand.extend(item["robocopyoptions"])
+                robocommand.extend(["/LOG+:" + logfile])
+
                 robocmdlist.append(robocommand)
 
         results_robocmdlist = pool.map(exec_shell_cmd, robocmdlist)

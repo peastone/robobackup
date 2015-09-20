@@ -254,7 +254,7 @@ class HelperFunctionsInRobobackup(unittest.TestCase):
     @mock.patch("robobackup.call", autospec=True)
     def test_exec_shell_cmd(self, mock_call):
         robobackup.exec_shell_cmd("testcmd")
-        mock_call.assert_called_with("testcmd", shell=True)
+        mock_call.assert_called_with("testcmd")
 
     def test_check_cmd_results(self):
         commands = ["cmd_a", "cmd_b"]
